@@ -1,19 +1,28 @@
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
-
-register_matplotlib_converters()
-
+import mplfinance as mpf
+import matplotlib.animation as animation
 
 class GraphicDisplay():
-    def plot(self, stock_name: str, data: pd.DataFrame):
-        plt.plot(data['time'], data['close'], 'r-', label='close')
+    def __init__(self):
+        self._data = None
+        self._fetch_data = None
+        self._ax = None
+
+    def _animation(self, interval):
+        data = self._fetch_data()
         
-        # display the legends
-        plt.legend(loc='upper left')
+        self._ax.clear()
+        mpf.plot(data,ax=self._ax,type='candle')
+
+    def plot(self, stock_name: str, data: pd.DataFrame, fetch_func):        
+        self._data = data
+        self._fetch_data = fetch_func
         
-        # add the header
-        plt.title(stock_name)
+        fig, axes = mpf.plot(data,returnfig=True,figsize=(11,8),type='candle',title='\n\Mini índice')
+        ax = axes[0]        
+
+        self._ax = ax
         
-        # display the chart
-        plt.show()    
+        ani = animation.FuncAnimation(fig, self._animation, interval=1000)
+
+        mpf.show()

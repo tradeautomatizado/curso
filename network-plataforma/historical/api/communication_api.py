@@ -1,6 +1,7 @@
 import logging
+from datetime import datetime, timedelta
 import MetaTrader5 as mt5
-from historical.core import get_data_by_bar
+from historical.core import get_data_by_bar, get_data_start_from
 
 logger = logging.getLogger(__name__)
 
@@ -9,6 +10,11 @@ class CommunicationApi():
     """Broker Communction Class."""
     def disconnect(self):
         mt5.shutdown()
+
+    def fetch_next(self, stock, last_bar):
+        stz = last_bar + timedelta(minutes=1)
+        ticks =  get_data_start_from(stock, stz, 1, mt5.TIMEFRAME_M1)        
+        return ticks
 
     def connect(self, logon_info):
         """it establish communication with broker."""
@@ -33,5 +39,5 @@ class CommunicationApi():
 
     def get_historical(self, stock):
         N_BARS = 100
-        ticks = get_data_by_bar(stock, N_BARS, mt5.TIMEFRAME_D1)
+        ticks = get_data_by_bar(stock, N_BARS, mt5.TIMEFRAME_M1)
         return ticks
