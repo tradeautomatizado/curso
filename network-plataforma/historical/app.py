@@ -21,6 +21,7 @@ class App():
 
     def _update_last_received_bar(self):
         self._actual_bar = self._get_last_received_bar()
+        
     def _fetch_next(self):
         new_data = self._comm_api.fetch_next([self._stock_code], self._actual_bar)
         new_bar = pd.to_datetime(new_data.iloc[-1:].time.values[0])

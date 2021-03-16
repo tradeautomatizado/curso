@@ -11,7 +11,7 @@ class CommunicationApi():
     def disconnect(self):
         mt5.shutdown()
 
-    def fetch_next(self, stock, last_bar):
+    def fetch_next(self, stock, last_bar: datetime):
         stz = last_bar + timedelta(minutes=1)
         ticks =  get_data_start_from(stock, stz, 1, mt5.TIMEFRAME_M1)        
         return ticks

@@ -18,11 +18,11 @@ class GraphicDisplay():
         self._data = data
         self._fetch_data = fetch_func
         
-        fig, axes = mpf.plot(data,returnfig=True,figsize=(11,8),type='candle',title='\n\Mini índice')
+        fig, axes = mpf.plot(data,returnfig=True,figsize=(11,8),type='candle',title=stock_name)
         ax = axes[0]        
 
         self._ax = ax
         
-        ani = animation.FuncAnimation(fig, self._animation, interval=1000)
+        ani = animation.FuncAnimation(fig, self._animation, interval=250)
 
         mpf.show()
