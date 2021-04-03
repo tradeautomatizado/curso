@@ -14,7 +14,7 @@ class MyTestApp(npyscreen.NPSAppManaged):
 
 class MainForm(npyscreen.Form):
     def create(self):
-        t = self.add(npyscreen.TitleText, name="Text:", value="Hellow World!")
+        t = self.add(npyscreen.BoxTitle, name="Text:", value="Hellow World!")
         t.display()
         t.editable = False
 
@@ -24,4 +24,7 @@ class MainForm(npyscreen.Form):
 
 if __name__ == "__main__":
     TA = MyTestApp()
-    TA.run()
+    try:
+        TA.run()
+    except (KeyboardInterrupt):
+        print("Application Closed")
