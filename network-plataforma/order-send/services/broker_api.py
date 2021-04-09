@@ -1,7 +1,12 @@
+from copy import Error
 import pandas as pd
 import MetaTrader5 as mt5
 from datetime import datetime
 from MetaTrader5 import AccountInfo
+
+
+class OrderSendError(Exception):
+    pass
 
 
 class BrokerAPI:
@@ -64,3 +69,33 @@ class BrokerAPI:
 
         return data
 
+    def send_order(self, stock_name: str, stock_qty: int, stock_price: float, order_type: int):
+        request = {
+            "action": mt5.TRADE_ACTION_PENDING,
+            "symbol": stock_name,
+            "volume": float(stock_qty),
+            "type": order_type,
+            "price": float(stock_price),
+            "magic": 234000,
+            "comment": "Trade Automatizado APP Demo",
+            "type_time": mt5.ORDER_TIME_DAY,
+            "type_filling": mt5.ORDER_FILLING_RETURN,
+        }
+
+        result = mt5.order_send(request)
+
+        if not result:
+            raise OrderSendError("Order_send failed, retcode={}".format(mt5.last_error()))
+        if result.retcode != mt5.TRADE_RETCODE_DONE:
+            raise OrderSendError("Order_send failed, retcode={}".format(result.retcode))
+
+        return True
+
+    def buy(self, stock_name: str, stock_qty: int, stock_price: float):
+        return self.send_order(stock_name, stock_qty, stock_price, mt5.ORDER_TYPE_BUY_LIMIT)
+
+    def sell(self, stock_name: str, stock_qty: int, stock_price: float):
+        return self.send_order(stock_name, stock_qty, stock_price, mt5.ORDER_TYPE_SELL)
+
+    def get_orders(self):
+        return mt5.orders_get()
