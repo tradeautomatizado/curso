@@ -3,7 +3,7 @@ import logging
 import npyscreen
 from services import BrokerAPI
 from views import MainForm, SelectStockMainForm, PlaceOrderForm
-from MetaTrader5 import TIMEFRAME_M1
+from MetaTrader5 import TIMEFRAME_D1
 
 
 class TradeAppGUI(npyscreen.NPSAppManaged):
@@ -18,7 +18,7 @@ class TradeAppGUI(npyscreen.NPSAppManaged):
         self.stock = "PETR4"
         self.ask = 0
         self.bid = 0
-        self.timeframe = TIMEFRAME_M1
+        self.timeframe = TIMEFRAME_D1
         self.window = MainForm(parentApp=self, name="Trade App [http://www.tradeautomatizado.com.br]")
         self.stockform = SelectStockMainForm(parentApp=self, name="Alterar papel")
         self.place_order_form = PlaceOrderForm(parentApp=self, name="Nova Ordem")
