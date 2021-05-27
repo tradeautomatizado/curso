@@ -1,0 +1,2 @@
+backtrader>1.9, <2.0
+matplotlib==3.2.2 # have to be 3.2.2 version to works with backtrader
